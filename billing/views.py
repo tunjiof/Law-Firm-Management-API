@@ -1,29 +1,12 @@
-# from django.shortcuts import render
-# from rest_framework import generics
-# from .models import Billing
-# from .serializers import BillingSerializer
-
-# # Create your views here.
-
-# class BillingListCreateView(generics.ListCreateAPIView):
-#     queryset = Billing.objects.all()
-#     serializer_class = BillingSerializer
-
-# class BillingDetailView(generics.RetrieveUpdateDestroyAPIView):
-#     queryset = Billing.objects.all()
-#     serializer_class = BillingSerializer
-
-
-
 from django.shortcuts import get_object_or_404
 from rest_framework import generics, permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from .models import Billing  # Assuming you have a Billing model
-from .serializers import BillingSerializer  # Assuming you have a BillingSerializer
+from .models import Billing 
+from .serializers import BillingSerializer
 
 class BillingListCreateView(APIView):
-    permission_classes = [permissions.IsAuthenticated]  # Only authenticated users can access
+    permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request):
         """
@@ -33,9 +16,9 @@ class BillingListCreateView(APIView):
         if request.user.role == 'admin':
             billings = Billing.objects.all()
         elif request.user.role == 'lawyer':
-            billings = Billing.objects.filter(lawyer=request.user)  # Replace with the actual relationship field
+            billings = Billing.objects.filter(lawyer=request.user) 
         elif request.user.role == 'client':
-            billings = Billing.objects.filter(client=request.user)  # Replace with the actual relationship field
+            billings = Billing.objects.filter(client=request.user)
         else:
             return Response({"error": "Permission denied."}, status=status.HTTP_403_FORBIDDEN)
 
@@ -58,7 +41,7 @@ class BillingListCreateView(APIView):
 
 
 class BillingDetailView(APIView):
-    permission_classes = [permissions.IsAuthenticated]  # Only authenticated users can access
+    permission_classes = [permissions.IsAuthenticated]
 
     def get(self, request, pk):
         """

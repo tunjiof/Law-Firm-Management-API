@@ -26,7 +26,7 @@ class UserManager(BaseUserManager):
             password=password
         )
         user.is_admin = True
-        user.is_superuser = True  # Ensure superuser has all permissions
+        user.is_superuser = True
         user.save(using=self._db)
         return user
 
